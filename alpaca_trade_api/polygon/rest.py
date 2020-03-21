@@ -108,20 +108,24 @@ class REST(object):
         raw = self.get(path, params, 'v2')
 
         return QuotesV2(raw)
-
+    
+    @deprecated(
+        'historic_agg v1 is deprecated. This function just passes inputs to historic_quotes_v2. ' +
+        'Please upgrade to historic_quotes_v2.'
+    )
     def historic_agg(self, size, symbol,
                      _from=None, to=None, limit=None):
-        path = '/historic/agg/{}/{}'.format(size, symbol)
-        params = {}
-        if _from is not None:
-            params['from'] = _from
-        if to is not None:
-            params['to'] = to
-        if limit is not None:
-            params['limit'] = limit
-        raw = self.get(path, params)
+        
+        # Replaced original historic_agg with a passthrough to historic_quotes_v2.
+        # This allows the alpaca-backtrader-api demo to work.
+        v2_params = {'symbol': symbol,
+                     'multiplier': 1,
+                     'timespan': size,
+                     '_from': int(1000*datetime.datetime.fromisoformat(_from).timestamp()),
+                     'to': int(1000*datetime.datetime.fromisoformat(to).timestamp()),
+                     'limit': limit}
 
-        return Aggs(raw)
+        return self.historic_agg_v2(**v2_params)
 
     def historic_agg_v2(self, symbol, multiplier, timespan, _from, to,
                         unadjusted=False, limit=None):
