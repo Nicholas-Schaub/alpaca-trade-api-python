@@ -9,7 +9,7 @@ from .entity import (
 )
 from alpaca_trade_api.common import get_polygon_credentials
 from deprecated import deprecated
-
+import datetime
 
 def _is_list_like(o):
     return isinstance(o, (list, set, tuple))
@@ -110,8 +110,8 @@ class REST(object):
         return QuotesV2(raw)
     
     @deprecated(
-        'historic_agg v1 is deprecated. This function just passes inputs to historic_quotes_v2. ' +
-        'Please upgrade to historic_quotes_v2.'
+        'historic_agg v1 is deprecated. This function just passes inputs to historic_agg_v2. ' +
+        'Please upgrade to historic_agg_v2.'
     )
     def historic_agg(self, size, symbol,
                      _from=None, to=None, limit=None):
